@@ -5,9 +5,9 @@ Each business requirement has only one implementation in the target architecture
 Case: Credit Management
 在 ERP 中:
 原始版本 SD-BF-CM（SAP Credit Risk Portfolio Management）
-	早期实现，功能有限 
+早期实现，功能有限
 高级版本 | FIN-FSCM-CR（SAP Credit Management）
-	后期引入，功能丰富，支持集成外部信用信息提供商
+后期引入，功能丰富，支持集成外部信用信息提供商
 
 在 SAP S/4HANA 中，**仅保留高级版本 FIN-FSCM-CR** 作为目标架构，未来所有创新也将只基于此功能开展。
 
@@ -38,6 +38,7 @@ SAP 提供了完整的功能简化清单，称为 **Simplification Item Catalog 
 引入SAP HANA 数据库
 
 数据模型
+
 - 省略聚合表（Omitted Aggregates）
 - 重新设计 ABAP Dictionary 表（Redesign of Existing ABAP Dictionary Tables）
 - 代码下推（Code Pushdown）
@@ -46,14 +47,16 @@ SAP 提供了完整的功能简化清单，称为 **Simplification Item Catalog 
 
 代码下推（Code Pushdown）
 原来：大量数据在网络与内存之间搬运，成为性能瓶颈。
+
 ```
 数据库 → 原始数据加载到应用层 → ABAP 内核执行运算 → 返回结果
 ```
+
 现在：SAP S/4HANA 将部分数据处理逻辑**直接下推到数据库层**执行
+
 ```
 数据库（原地计算）→ 仅返回结果 → 应用层
 ```
-
 
 影响转换时间的关键因素
 转换所需时间主要取决于**待转换数据的体量**。
@@ -62,11 +65,12 @@ SAP 提供了完整的功能简化清单，称为 **Simplification Item Catalog 
 SAP S/4HANA 内置的兼容模式包含读取模块，支持读取已归档的数据，因此归档操作不会影响历史数据的可访问性。
 
 Sizing 估算经验法则
+
 ```
 主内存需求 ≈ 压缩后数据量 × 2
 ```
-**SAP 建议**：由于 Sizing 结果高度依赖实际压缩率等特定条件，强烈建议在现有 SAP ERP 系统中运行 **Sizing 报告**以获取更准确的估算值。详细 Sizing 信息参见：https://service.sap.com/siz
 
+**SAP 建议**：由于 Sizing 结果高度依赖实际压缩率等特定条件，强烈建议在现有 SAP ERP 系统中运行 **Sizing 报告**以获取更准确的估算值。详细 Sizing 信息参见：https://service.sap.com/siz
 
 SAP Fiori User Interfaces
 Transactional Apps
@@ -75,6 +79,7 @@ Analytical Apps
 SAP Fiori 应用参考库：http://s-prs.co/v581603
 
 架构层次说明（从前到后）：
+
 ```
 浏览器（任意设备）
     ↓
@@ -104,6 +109,7 @@ SAP 决定在 **SAP S/4HANA Cloud 公有版（Public Edition）**中**独家提�
 ④ 第三方应用（Third-Party Applications）
 
 迁移工作量的决定因素
+
 ```
 遵循 SAP 标准化建议程度
         ↑ 越高
@@ -115,10 +121,10 @@ SAP 决定在 **SAP S/4HANA Cloud 公有版（Public Edition）**中**独家提�
         ↑ 越多
 ```
 
-
 SAP S/4HANA Embedded Analytics
 其核心定位是：**让任何用户**（不仅限于数据分析专家）都能基于 SAP S/4HANA 应用数据创建并执行实时分析。
 技术基础：CDS 视图与虚拟数据模型
+
 ```
 原生应用表（Native Tables）
         ↓
@@ -128,18 +134,3 @@ CDS 视图（Core Data Services Views）
         ↓  用户在此层面运行
 实时查询（Real-Time Queries on Transactional Data）
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
