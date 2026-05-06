@@ -4,7 +4,7 @@ title: Welcome
 
 # SAP Support 24x7
 
-This is Jaya's knowledge base — notes on SAP BASIS, AWS cloud architecture, and related technologies.
+This is Jaya's knowledge base — SAP Administrator, AWS, BTP, and related technologies.
 
 ## Sections
 
@@ -12,4 +12,4 @@ This is Jaya's knowledge base — notes on SAP BASIS, AWS cloud architecture, an
 
 ## About
 
-A SAP BASIS consultant based in Canada, transitioning toward cloud architecture.
+A SAP BASIS consultant based in Canada.
