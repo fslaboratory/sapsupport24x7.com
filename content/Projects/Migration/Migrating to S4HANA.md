@@ -5,9 +5,9 @@ Each business requirement has only one implementation in the target architecture
 Case: Credit Management
 在 ERP 中:
 原始版本 SD-BF-CM（SAP Credit Risk Portfolio Management）
-	早期实现，功能有限 
+早期实现，功能有限
 高级版本 | FIN-FSCM-CR（SAP Credit Management）
-	后期引入，功能丰富，支持集成外部信用信息提供商
+后期引入，功能丰富，支持集成外部信用信息提供商
 
 在 SAP S/4HANA 中，**仅保留高级版本 FIN-FSCM-CR** 作为目标架构，未来所有创新也将只基于此功能开展。
 
@@ -38,6 +38,7 @@ SAP 提供了完整的功能简化清单，称为 **Simplification Item Catalog 
 引入SAP HANA 数据库
 
 数据模型
+
 - 省略聚合表（Omitted Aggregates）
 - 重新设计 ABAP Dictionary 表（Redesign of Existing ABAP Dictionary Tables）
 - 代码下推（Code Pushdown）
@@ -46,14 +47,16 @@ SAP 提供了完整的功能简化清单，称为 **Simplification Item Catalog 
 
 代码下推（Code Pushdown）
 原来：大量数据在网络与内存之间搬运，成为性能瓶颈。
+
 ```
 数据库 → 原始数据加载到应用层 → ABAP 内核执行运算 → 返回结果
 ```
+
 现在：SAP S/4HANA 将部分数据处理逻辑**直接下推到数据库层**执行
+
 ```
 数据库（原地计算）→ 仅返回结果 → 应用层
 ```
-
 
 影响转换时间的关键因素
 转换所需时间主要取决于**待转换数据的体量**。
@@ -62,11 +65,12 @@ SAP 提供了完整的功能简化清单，称为 **Simplification Item Catalog 
 SAP S/4HANA 内置的兼容模式包含读取模块，支持读取已归档的数据，因此归档操作不会影响历史数据的可访问性。
 
 Sizing 估算经验法则
+
 ```
 主内存需求 ≈ 压缩后数据量 × 2
 ```
-**SAP 建议**：由于 Sizing 结果高度依赖实际压缩率等特定条件，强烈建议在现有 SAP ERP 系统中运行 **Sizing 报告**以获取更准确的估算值。详细 Sizing 信息参见：https://service.sap.com/siz
 
+**SAP 建议**：由于 Sizing 结果高度依赖实际压缩率等特定条件，强烈建议在现有 SAP ERP 系统中运行 **Sizing 报告**以获取更准确的估算值。详细 Sizing 信息参见：https://service.sap.com/siz
 
 SAP Fiori User Interfaces
 Transactional Apps
@@ -75,6 +79,7 @@ Analytical Apps
 SAP Fiori 应用参考库：http://s-prs.co/v581603
 
 架构层次说明（从前到后）：
+
 ```
 浏览器（任意设备）
     ↓
@@ -104,6 +109,7 @@ SAP 决定在 SAP S/4HANA Cloud 公有版（Public Edition）中独家提供 SAP
 ④ 第三方应用（Third-Party Applications）
 
 迁移工作量的决定因素
+
 ```
 遵循 SAP 标准化建议程度
         ↑ 越高
@@ -115,10 +121,10 @@ SAP 决定在 SAP S/4HANA Cloud 公有版（Public Edition）中独家提供 SAP
         ↑ 越多
 ```
 
-
 SAP S/4HANA Embedded Analytics
 其核心定位是：**让任何用户**（不仅限于数据分析专家）都能基于 SAP S/4HANA 应用数据创建并执行实时分析。
 技术基础：CDS 视图与虚拟数据模型
+
 ```
 原生应用表（Native Tables）
         ↓
@@ -129,8 +135,8 @@ CDS 视图（Core Data Services Views）
 实时查询（Real-Time Queries on Transactional Data）
 ```
 
-
 SAP S/4HANA Cloud, Public Edition
+
 - **主版本升级（Upgrade）**：每季度一次（约每年 4 次），SAP 不允许例外或推迟
 - **Hotfix Collections**：每两周导入一次
 - 版本命名规则：年份 + 月份，例如 `2311` 代表 2023 年 11 月
@@ -158,10 +164,10 @@ SAP S/4HANA Cloud, Public Edition
 - 因此，公有云版**只支持新实施（New Implementation）**，不支持系统转换或选择性数据迁移
 - 用户界面通过 **SAP Fiori** 访问
 
-| 迁移方式                                   | On-Premise | Private Edition | Public Edition |
-| -------------------------------------- | ---------- | --------------- | -------------- |
-| 新实施（New Installation）                  | ✓          | ✓               | ✓              |
-| 系统转换（System Conversion）                | ✓          | ✓               | —              |
+| 迁移方式                                        | On-Premise | Private Edition | Public Edition |
+| ----------------------------------------------- | ---------- | --------------- | -------------- |
+| 新实施（New Installation）                      | ✓          | ✓               | ✓              |
+| 系统转换（System Conversion）                   | ✓          | ✓               | —              |
 | 选择性数据迁移（Migration with Selective Data） | ✓          | ✓               | —              |
 
 扩展限制
@@ -169,12 +175,11 @@ SAP S/4HANA Cloud, Public Edition
 - **不允许**修改 SAP 代码（与 On-Premise 版不同）
 - **不允许**安装合作伙伴 App（On-Premise 方式）
 - 可用的扩展方式：
-    - Key-user extensibility（关键用户扩展）
-    - Developer extensibility（开发者扩展）
-    - Side-by-side extensibility（旁路扩展）
+  - Key-user extensibility（关键用户扩展）
+  - Developer extensibility（开发者扩展）
+  - Side-by-side extensibility（旁路扩展）
 
 业务流程实施基于**解决方案包（SAP Best Practices）**，包含预配置内容，可通过配置和扩展进行定制。
-
 
 RISE with SAP
 
@@ -184,12 +189,12 @@ RISE with SAP
 
 SAP 同时提供面向**中端市场**的类似计划：
 
-| 维度 | RISE with SAP | GROW with SAP |
-|---|---|---|
-| 目标客户 | 大型企业、现有 SAP 客户 | 中端市场、新兴企业 |
-| 核心产品 | SAP S/4HANA Cloud, private edition | SAP S/4HANA Cloud, public edition |
-| 包含 SAP BTP | ✓ | ✓ |
-| 定位 | 业务转型与云迁移 | 快速上云启动 |
+| 维度         | RISE with SAP                      | GROW with SAP                     |
+| ------------ | ---------------------------------- | --------------------------------- |
+| 目标客户     | 大型企业、现有 SAP 客户            | 中端市场、新兴企业                |
+| 核心产品     | SAP S/4HANA Cloud, private edition | SAP S/4HANA Cloud, public edition |
+| 包含 SAP BTP | ✓                                  | ✓                                 |
+| 定位         | 业务转型与云迁移                   | 快速上云启动                      |
 
 GROW with SAP 主要面向**新企业**，帮助其快速以云的方式使用 SAP。
 
@@ -206,13 +211,12 @@ RISE with SAP
 
 具体演进对应关系：
 
-| 旧有组件                                            | SAP BTP 对应产品                                             |
-| ----------------------------------------------- | -------------------------------------------------------- |
-| SAP NetWeaver AS ABAP                           | ABAP Cloud（SAP BTP, ABAP Environment）                    |
+| 旧有组件                                        | SAP BTP 对应产品                                              |
+| ----------------------------------------------- | ------------------------------------------------------------- |
+| SAP NetWeaver AS ABAP                           | ABAP Cloud（SAP BTP, ABAP Environment）                       |
 | SAP Process Integration / Process Orchestration | SAP Integration Suite（前身：SAP Cloud Platform Integration） |
 
 SAP BTP 今天与 SAP NetWeaver 昔日的角色相同：**所有 SAP 产品的基础技术底座**——一切产品要么构建于其上，要么可通过它进行扩展。
-
 
 SAP BTP 对于 SAP S/4HANA 迁移项目具有直接价值：
 
@@ -246,7 +250,6 @@ SAP BTP 工具全景
     └── SAP AI Core
 ```
 
-
 三阶段任务划分
 
 阶段一：准备（Preparation）
@@ -270,7 +273,6 @@ SAP BTP 工具全景
 - 适配集成场景
 - 定制 SAP Fiori UI
 
-
 新实施检查清单
 
 1. 确定目标状态（运营模式与实例分布）——支持 On-Premise、SAP HANA Enterprise Cloud、SaaS 云
@@ -287,7 +289,6 @@ SAP BTP 工具全景
 12. 执行增量配置（Delta Configuration）
 13. 执行最终测试
 14. 向用户推出新流程
-
 
 系统转换检查清单
 
@@ -307,7 +308,6 @@ SAP BTP 工具全景
 14. 执行增量配置（Delta Configuration）
 15. 执行最终测试
 16. 向用户推出新流程
-
 
 确定适配工作范围的主要工具
 
@@ -330,12 +330,11 @@ SAP BTP 工具全景
 
 **SAP Readiness Check for SAP S/4HANA**
 免费服务，通过清晰的仪表板呈现系统转换中最关键的方面，可在生产和开发系统（或对应的系统副本）上运行。主要功能：
+
 - 相关简化项及自定义开发适配信息
 - 数据库大小调整信息和建议
 - 活跃业务功能与 S/4HANA 的兼容性评估
 - 基于使用数据的 SAP Fiori 应用推荐
-
-
 
 三大项目阶段概览
 
@@ -343,10 +342,10 @@ SAP BTP 工具全景
 适配与测试阶段（Adaptation and Test Phase）
 执行阶段（Execution Phase）
 
-
 五轮转换循环
 
 **第 1 轮：初始测试系统转换（沙箱）**
+
 - 获取技术转换知识，供后续轮次使用
 - 最终用户熟悉 SAP S/4HANA 业务功能
 - 对自定义开发进行基于新软件的分析与测试
@@ -354,34 +353,37 @@ SAP BTP 工具全景
 - **建议**：同步建立系统转换操作手册，记录每个周期的技术和功能活动及所需时间
 
 **第 2 轮：开发系统转换（DEV）**
+
 - 将自定义开发适配至 S/4HANA 解决方案范围和数据结构
 - 实施强制性适配（未在源系统中提前实施的部分）
 - 实施可选适配以最大化转换收益
 - **重要**：转换后尽量减少进一步变更，需提前协调并通知"系统冻结（system freeze）"
 
 **第 3 轮：QA 系统转换**
+
 - 起草 cut-over 计划（列出 cut-over 周末从头到尾的所有活动）
 - 从 DEV 系统导入适配内容（业务流程调整和自定义开发适配）
 - 测试适配后的业务流程和新 SAP Fiori UI
 
 **第 4 轮：生产系统转换测试（沙箱）**
+
 - 在沙箱中以与 PRD 系统相同的条件测试生产转换
 - 准备减少停机时间的优化措施
 - 最终确定 cut-over 计划
 - 建议进行多次测试迭代
 
 **第 5 轮：生产系统转换（PRD）**
-- 按照 cut-over 计划执行
 
+- 按照 cut-over 计划执行
 
 双开发系统过渡期管理
 
 从 DEV 系统转换开始，直到 PRD 生产系统转换完成，需要同时维护**两套开发系统**：一套在原 SAP Business Suite 架构中，一套在新 SAP S/4HANA 架构中。
 
 **过渡期策略要点：**
-- 须制定策略：SAP ERP 系统组在此期间的变更如何同步到 SAP S/4HANA 系统组
-- 若两个开发系统都需要 ABAP 开发，可参考 **SAP Note 2652106** 评估是否可使用 SAP Solution Manager 的 **Re
 
+- 须制定策略：SAP ERP 系统组在此期间的变更如何同步到 SAP S/4HANA 系统组
+- 若两个开发系统都需要 ABAP 开发，可参考 **SAP Note 2652106** 评估是否可使用 SAP Solution Manager 的 \*\*Re
 
 架构层面的关键决策
 
@@ -391,7 +393,3 @@ SAP BTP 工具全景
 - **应用服务器操作系统**：确认 SAP ERP 系统的操作系统在 S/4HANA 中受支持（SAP Note 2696472）
 - **Hub 系统互操作性**：如 SAP Process Integration，SAP Note 2251604 提供版本支持信息
 - **运行环境**：自建数据中心（on-premise）还是私有云（IaaS）
-
-
-
-
