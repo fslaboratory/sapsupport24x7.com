@@ -8,7 +8,7 @@ This is Jaya's knowledge base — SAP Administrator, AWS, BTP, and related techn
 
 ## Sections
 
-- [[Projects/SAP - Migrating to S4HANA - updating|SAP S/4HANA Migration]]
+- [[Projects/Migration/Migrating to S4HANA|SAP S/4HANA Migration]]
 
 ## About
 
